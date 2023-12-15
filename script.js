@@ -3,72 +3,129 @@ document.addEventListener("DOMContentLoaded", function() {
     var tableau = document.createElement("table");
 
     const GenerateurPoints = ()=>{
-        var points = Math.floor(Math.random() * (8 - 2 + 1)) + 2;
-        return points
+        var Gpoints = Math.floor(Math.random() * (8 - 2 + 1)) + 2;
+        return Gpoints
     }
-    const GenerateurBombes = ()=>{
-        var bombes = Math.floor(Math.random() * 3) + 1;
+    const GenerateurBombes = (points)=>{
+        
         if(points == 3){
-            bombes = Math.floor(Math.random() * (4 - 1 + 1)) + 1;
+        var Gbombes = Math.floor(Math.random() * (4 - 2 + 1)) + 2;
         }else if(points == 2){
-            bombes = Math.floor(Math.random() * (4 - 3 + 1)) + 3;
-        }else if( points > 6){
-            bombes = Math.floor(Math.random() * (2 - 1 + 1)) + 1;   
-        }
-        return bombes
-
+        var Gbombes = Math.floor(Math.random() * ((4 - 3 + 1)) + 3);
+        }else if( points == 7 || points == 8){
+        var Gbombes = Math.floor(Math.random() * ((2 - 1 + 1)) + 1);   
+        }else{
+        var Gbombes = Math.floor(Math.random() * 3) + 1;
+        }           
+        return Gbombes
     }
-    const FillCell =()=>{
-        var bombes = 1
-        var points = 4
+
+    const FillCell =(points, bombes)=>{
+       // var points = GenerateurPoints()    
+        //var bombes = GenerateurBombes(points)     
         var arrayCell = [];
         for(var b = 0; b < bombes;b++){
             arrayCell.push('0')
         }
         //bombes stackées dans le tableau
         var nbrCell = 5 - bombes;
-        if(points == nbrCell){
+        if(points == nbrCell){ //uniquement des 1 (2.3/4.1)
             for(var e = 0; e < nbrCell; e++){
             arrayCell.push(1)
             }
-        }else if(bombes == 4){
+        }else if(bombes == 4){ // uniquement une cellule à points + 4 bombes (1.4/2.4/3.4)
             arrayCell.push(points)
-        }else{
-            if(nbrCell%2 == false && points%2 == false){
+        }else{            
+            var randomizer = Math.floor(Math.random() * 2)
+            if(nbrCell%2 == false && (points%nbrCell) == false){ // que des 2 OU 3 (4.3/6.3/8.1)
                 for(var e = 0; e < nbrCell; e++){
                     arrayCell.push(points/nbrCell)
                     }
-            }else if (nbrCell%2 == false && points%2){
-                
+            }else if (points == 3 && bombes == 3){ //3.3
+                arrayCell.push(2)
+                arrayCell.push(1)
+            }else if (points == 4 && bombes == 2){//4.2
+                arrayCell.push(2)
+                arrayCell.push(1)
+                arrayCell.push(1)
+            }else if (points == 5){//5
+                if(bombes == 1){//5.1
+                    arrayCell.push(2)
+                    arrayCell.push(1) 
+                    arrayCell.push(1)                    
+                    arrayCell.push(1)                  
+                }else if(bombes == 2){//5.2
+                    if(randomizer == 0){
+                        arrayCell.push(2)
+                        arrayCell.push(2)                    
+                        arrayCell.push(1)     
+                    }else if(randomizer == 1){
+                        arrayCell.push(3)
+                        arrayCell.push(1) 
+                        arrayCell.push(1)                  
+                    }            
+                }else if(bombes == 3){//5.3
+                    arrayCell.push(2)
+                    arrayCell.push(3)  
+                }            
+            }else if (points == 6){//6.1/6.2
+                if(bombes == 1){
+                    if(randomizer == 0){
+                        arrayCell.push(2)
+                        arrayCell.push(2) 
+                        arrayCell.push(1)                    
+                        arrayCell.push(1)                  
+                    }else if(randomizer == 1){
+                        arrayCell.push(3) 
+                        arrayCell.push(1)   
+                        arrayCell.push(1)                    
+                        arrayCell.push(1)
+                    }
+                }else if(bombes == 2){
+                    if(randomizer == 0){
+                        arrayCell.push(2)
+                        arrayCell.push(2)
+                        arrayCell.push(2)                  
+                    }else if(randomizer == 1){
+                        arrayCell.push(3)
+                        arrayCell.push(2)                    
+                        arrayCell.push(1)
+                    }
+                }
+            }else if (points == 7){//7   
+                if(bombes == 1){//7.1
+                    arrayCell.push(2)
+                    arrayCell.push(2) 
+                    arrayCell.push(2)                    
+                    arrayCell.push(1)                  
+                }else if(bombes == 2){//7.2
+                    if(randomizer == 0){
+                        arrayCell.push(3)
+                        arrayCell.push(2)                    
+                        arrayCell.push(2)     
+                    }else if(randomizer == 1){
+                        arrayCell.push(3)
+                        arrayCell.push(3) 
+                        arrayCell.push(1)                  
+                    }            
+                }
+            }else if (points == 8 && bombes == 2){//8.2
+                    arrayCell.push(3)
+                    arrayCell.push(3) 
+                    arrayCell.push(2)
             }
-            // Notes pour demain, cas couverts :
-            // 1.4/2.4/3.4/2.3/4.1/4.3/6.2/6.3/8.1/
-            //Reste à gérer 3.3/4.2/5.1/5.2/5.3/6.1/7.1/7.2/8.2
-            // 
-
-           // arrayCell.push(2)
-           // arrayCell.push(3)
-           // arrayCell.push(3)
-           // arrayCell.sort(() => Math.random() - 0.5);
         }
-
-
-        console.log('nbrCell :' + nbrCell)
-        var totalDecrement = points
-        console.log('points avant decrement :' + points)
-        for(var n = 0; n < nbrCell;n++){
-            var decrement = Math.floor(Math.random() * 3) + 1
-            totalDecrement - decrement
-            console.log('valeur decrement :'+ decrement)
-            arrayCell.push()
-        }
-        var decrement = Math.floor(Math.random() * nbrCell) + 1
         arrayCell.sort((a, b) => 0.5 - Math.random());
-        console.log(arrayCell)
+        //console.log('formule bombe 3 a 4 :' + Math.floor(Math.random() * ((4 - 3 + 1)) + 3) )
+        //console.log('randomizer:' + randomizer)    
+        //console.log('points:' + points)        
+        //console.log('bombes:'+ bombes)
+        //console.log(arrayCell)
+        return arrayCell
     }
     
-    console.log(FillCell())
     
+    //Problème : génère un 2.1 +2.2 + 3.1 + 7.3 +8.3 erroné
 
 
 
@@ -77,7 +134,8 @@ document.addEventListener("DOMContentLoaded", function() {
     for (var i = 0; i < 6; i++) {
         var ligne = document.createElement("tr");
         var points = GenerateurPoints();
-        var bombes = GenerateurBombes();
+        var bombes = GenerateurBombes(points);
+        var arrayCell = FillCell(points, bombes);
         if(i != 5){
             for (var j = 0; j < 6; j++) {
                 // Création d'une cellule (td)
@@ -91,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }else{
                     var cellule = document.createElement("td");
                     cellule.className = "card";
-                    cellule.value = (points-bombes);
+                    cellule.value = arrayCell[(j-1)];
                     cellule.textContent = cellule.value
                     ligne.appendChild(cellule);
                     cellule.addEventListener("click", function() {
