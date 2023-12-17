@@ -5,12 +5,24 @@ td{
     text-align: center;
     
 }
-.card:hover{
+.card{
+    font-size: 0px;
+
+    &:hover{
         cursor: pointer;
+}
 }
 .indice{
     background-color: rgb(102, 35, 35);
 }
 .vide{
     border: none;
+}
+.compteur{
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    border: 1px solid black;
+    width: 10%;
+    height: 30px;
 }
