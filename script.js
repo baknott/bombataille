@@ -179,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             }else{
                                 cumul = cumul*alertBomb
                             }
+                            this.value = 1
                             MajCompteur()
                         }
                     });
